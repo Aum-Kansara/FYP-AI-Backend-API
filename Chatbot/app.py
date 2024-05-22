@@ -1,10 +1,29 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 import google.generativeai as genai
 from dotenv import load_dotenv
 import os
 
 load_dotenv()
 app = FastAPI()
+
+# CORS Origins
+origins = [
+    "http://localhost:5173",
+    "https://edurecx.onrender.com",
+]
+
+
+# Add CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
 GOOGLE_API_KEY=os.getenv("GOOGLE_API_KEY")
 genai.configure(api_key=GOOGLE_API_KEY)
 model = genai.GenerativeModel('gemini-pro')
